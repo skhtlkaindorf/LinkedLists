@@ -15,6 +15,14 @@ public class LinkedList
         Node n = new Node(a);
         // TODO: Your code
 
+        if (first == null ) {
+            first = n;
+            last = n;
+        }
+        else {
+            last.setNext(n);
+            last = n;
+        }
     }
 
     /**
@@ -29,11 +37,15 @@ public class LinkedList
      * @return Person|null
      */
     public Person next() {
-        // TODO: Your code
+
+        if (current == null)
+            return null;
+
+        Person result = current.getPerson();
+        current = current.getNext();
 
 
-
-        return null;
+        return result;
     }
 
     /**
@@ -43,13 +55,20 @@ public class LinkedList
      * @return Person|null
      */
     public Person get(int pos) {
+        if (pos < 0)
+            return null;
+
         Node n = first;
-        // TODO: Your code
+        int counter = 1;
+        while (counter < pos && n != null) {
+            n = n.getNext();
+            counter++;
+        }
 
+        if (n == null)
+            return null;
 
-
-
-        return null;
+        return n.getPerson();
     }
 
     /**
@@ -58,13 +77,39 @@ public class LinkedList
      * @param pos
      */
     public void remove(int pos) {
-        // 1. Ausgehend von first, bis zum Element an der Position pos hin navigieren. (siehe get)
+        // 1. Ausgehend von first, bis zum Element an der Position pos hin navigieren.
+        //  (siehe get)
         // 2. Überprüfen ob pos überhaupt gefunden wurde
-        // 3. Aufpassen, wenn pos das erste Element ist, dann muss first nämlich auch geändert werden
+        // 3. Aufpassen, wenn pos das erste Element ist,
+        //  dann muss first nämlich auch geändert werden
         // 4. Next richtig setzen
-        // 5. Aufpassen, wenn pos das letzte Element ist, dann muss last nämlich auch geändert werden
+        // 5. Aufpassen, wenn pos das letzte Element ist, dann muss last
+        //  nämlich auch geändert werden
 
-        //TODO: Your code
+        Node n = first;
+        int counter = 1;
+        while (counter < (pos -1) && n != null) {
+            n = n.getNext();
+            counter++;
+        }
+        if (n == null || pos < 0) {
+            return;
+        }
+        if (pos == 1) {
+            first = first.getNext();
+            n.setNext(null); // zeigt noch auf das alte "first"
+        }
+        else if (n.getNext() == last){ // Ende Löschen
+            last = n;
+            n.setNext(null);
+        }
+        else {
+            // vorgänger ist gefunden (n ist vorgänger)
+            // n.getNext() liefert das zu löschende Objekt
+            // n.getNext().getNext() ist der neue next-Knoten
+            n.setNext(n.getNext().getNext());
+        }
+
     }
 
     /**
@@ -73,8 +118,6 @@ public class LinkedList
      * @return int Position oder 0, wenn Person nicht gefunden
      */
     public int getPos(Person a) {
-
-
         return 0;
     }
 
@@ -87,7 +130,6 @@ public class LinkedList
     public boolean removePerson(Person a) {
         // Verwende getPos um die Position zu finden
         // Verwende remove(int pos) um an der Position zu löschen
-
         return true;
     }
 
@@ -99,6 +141,10 @@ public class LinkedList
      */
     public void insertAfterCurrent(Person a) throws CurrentNotSetException {
 
+        Node neu = new Node(a);
+        if (current == null) {
+            throw new CurrentNotSetException();
+        }
 
     }
 
