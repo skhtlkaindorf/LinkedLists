@@ -16,8 +16,8 @@ public class LinkedList
         // TODO: Your code
 
         if (first == null ) {
-            first = n;
-            last = n;
+            last = first = n;
+            //last = n;
         }
         else {
             last.setNext(n);
@@ -29,6 +29,7 @@ public class LinkedList
      * Internen Zeiger fuer next() zuruecksetzen
      */
     public void reset() {
+
         current = first;
     }
 
@@ -44,7 +45,6 @@ public class LinkedList
         Person result = current.getPerson();
         current = current.getNext();
 
-
         return result;
     }
 
@@ -55,7 +55,7 @@ public class LinkedList
      * @return Person|null
      */
     public Person get(int pos) {
-        if (pos < 0)
+        if (pos < 1)
             return null;
 
         Node n = first;
@@ -65,7 +65,7 @@ public class LinkedList
             counter++;
         }
 
-        if (n == null)
+        if (n == null) // wir sind hinten raus gelaufen
             return null;
 
         return n.getPerson();
@@ -118,7 +118,17 @@ public class LinkedList
      * @return int Position oder 0, wenn Person nicht gefunden
      */
     public int getPos(Person a) {
-        return 0;
+
+        Node n = first;
+        int counter = 1;
+        while (n != null && n.getPerson() != a) {
+            n = n.getNext();
+            counter++;
+        }
+        if (n == null)
+            return 0;
+
+        return counter;
     }
 
     /**
@@ -129,7 +139,10 @@ public class LinkedList
      */
     public boolean removePerson(Person a) {
         // Verwende getPos um die Position zu finden
-        // Verwende remove(int pos) um an der Position zu löschen
+        int pos = getPos(a);
+        if (pos == 0)
+            return false;
+        remove(pos);
         return true;
     }
 
@@ -141,10 +154,12 @@ public class LinkedList
      */
     public void insertAfterCurrent(Person a) throws CurrentNotSetException {
 
-        Node neu = new Node(a);
-        if (current == null) {
+        if (current == null)
             throw new CurrentNotSetException();
-        }
+
+        Node n = new Node(a);
+        n.setNext(current.getNext());
+        current.setNext(n);
 
     }
 

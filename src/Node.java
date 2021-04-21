@@ -5,6 +5,7 @@ public class Node
     private Node next;
 
     public Node(Person person) {
+
         this.person = person;
     }
 
